@@ -4,8 +4,8 @@ These python scripts are used to convert the Nomie couchDB documents into a MySQ
 - [Nomie CouchDB sync](https://docs.nomie.io/development/couchdb-setup.html)
 - MySQL 
 - Python Modules
-- - mysql.connector
-- - couchdb
+  - mysql.connector
+  - couchdb
 
 ###### Initialize MySQL database
 ```
