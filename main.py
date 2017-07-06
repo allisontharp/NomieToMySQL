@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import mysql.connector
-import couchdb
+import couchdb, sys
 from funcs import *
 
 conn = mysql.connector.connect(user = 'DBUsername', password = 'DBPassword', host = 'localhost', database = 'nomie')
