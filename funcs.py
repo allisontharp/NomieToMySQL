@@ -3,6 +3,80 @@ from datetime import datetime as dt
 from datetime import timedelta
 import time
 
+def createTables(c, conn):
+	query = '''CREATE TABLE IF NOT EXISTS UnitsOfMeasures (
+`UoMID` int(11) NOT NULL AUTO_INCREMENT,
+`name` varchar(200) DEFAULT NULL,
+PRIMARY KEY (`UoMID`)
+)'''
+	c.execute(query)
+	
+	query = '''CREATE TABLE IF NOT EXISTS charges (
+`chargeID` int(11) NOT NULL AUTO_INCREMENT,
+`conditionID` int(11) NOT NULL,
+`compare` int(11) NOT NULL,
+`value` int(11) NOT NULL,
+PRIMARY KEY (`chargeID`)
+ )
+'''
+	c.execute(query)
+	
+	query = '''CREATE TABLE IF NOT EXISTS conditions (	
+`conditionID` int(11) NOT NULL AUTO_INCREMENT,
+`name` varchar(100) NOT NULL,
+PRIMARY KEY (`conditionID`)
+)
+'''
+	c.execute(query)
+	
+	query = '''CREATE TABLE IF NOT EXISTS events (
+`eventID` int(11) NOT NULL AUTO_INCREMENT,
+`trackerID` int(11) NOT NULL,
+`lat` decimal(10,8) DEFAULT NULL,
+`lng` decimal(10,8) DEFAULT NULL,
+`date` datetime DEFAULT NULL,
+`value` varchar(255) DEFAULT NULL,
+PRIMARY KEY (`eventID`),
+UNIQUE KEY `TimeTrackerLocationValue` (`date`,`trackerID`,`lat`,`lng`,`value`)
+)
+'''
+	c.execute(query)
+	
+	query = '''CREATE TABLE IF NOT EXISTS notes (
+`noteID` int(11) NOT NULL AUTO_INCREMENT,
+`lat` decimal(10,8) DEFAULT NULL,
+`lng` decimal(10,8) DEFAULT NULL,
+`date` datetime DEFAULT NULL,
+`value` varchar(255) NOT NULL,
+PRIMARY KEY (`noteID`)
+)
+'''
+	c.execute(query) 
+	
+	query = '''CREATE TABLE IF NOT EXISTS trackerCharges (
+`trackerID` int(11) NOT NULL,
+`chargeID` int(11) NOT NULL,
+PRIMARY KEY (`trackerID`,`chargeID`)
+ )
+ '''
+	c.execute(query) 
+	
+	query = '''CREATE TABLE IF NOT EXISTS trackers (
+`trackerID` int(11) NOT NULL AUTO_INCREMENT,
+`name` varchar(200) NOT NULL,
+`min` decimal(16,2) DEFAULT NULL,
+`max` decimal(16,2) DEFAULT NULL,
+`UoMID` int(11) DEFAULT NULL,
+`defaultCharge` int(11) NOT NULL,
+`couchDbID` varchar(200) NOT NULL,
+PRIMARY KEY (`trackerID`),
+UNIQUE KEY `couchDbID` (`couchDbID`)
+)
+'''
+	c.execute(query) 
+	
+	conn.commit()
+
 def getTrackerInfo(dbt):
 	name = dbt['label']
 	try:
